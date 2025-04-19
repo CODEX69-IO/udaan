@@ -1,0 +1,10 @@
+{
+    "model_alias_map": {
+      "llama3": {
+        "model_name": "llama3",
+        "api_base": "http://localhost:11434",
+        "litellm_provider": "ollama"
+      }
+    }
+  }
+  
