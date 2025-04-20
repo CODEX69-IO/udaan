@@ -1,8 +1,45 @@
 import os
 os.environ["LITELLM_CONFIG_PATH"] = "litellm.config.json"
+os.makedirs("tts_output", exist_ok=True)
+
 from crewai import Crew, LLM
 from crewai import Agent, Task, Crew
 from dotenv import load_dotenv
+# import asyncio
+# import edge_tts
+# import uuid
+# os.environ["CREWAI_TELEMETRY_OPENTELEMETRY_DISABLED"] = "true"
+
+# === TEXT-TO-SPEECH (Edge-TTS) SETUP ===
+# VOICE_MAP = {
+#     "defendant": "en-US-GuyNeural",
+#     "defense_lawyer": "en-GB-RyanNeural",
+#     "plaintiff": "en-US-JennyNeural",
+#     "prosecution_lawyer": "en-GB-SoniaNeural",
+#     "witness_defense": "en-US-ChristopherNeural",
+#     "witness_prosecution": "en-AU-NatashaNeural",
+#     "judge": "en-US-AndrewNeural",
+#     "jury": "en-US-AriaNeural"
+# }
+
+# async def speak(text, agent_key):
+#     voice = VOICE_MAP.get(agent_key, "en-US-GuyNeural")
+#     filename = f"tts_output/{agent_key}_{uuid.uuid4()}.mp3"
+    
+#     communicate = edge_tts.Communicate(text=text, voice=voice)
+#     await communicate.save(filename)
+
+#     # Optional: Play audio (macOS/Windows only)
+#     try:
+#         if os.name == "nt":
+#             os.system(f"start {filename}")
+#         elif os.name == "posix":
+#             os.system(f"afplay '{filename}'")  # For macOS
+#     except Exception as e:
+#         print(f"Audio playback error: {e}")
+
+# def say(text, agent_key):
+#     asyncio.run(speak(text, agent_key))
 
 
 
@@ -213,3 +250,80 @@ def run_trial():
     print("📜 Trial Completed ✅")
 if __name__ == "__main__":
     run_trial()
+# def run_trial():
+#     agents = create_agents()
+
+#     case_description = input("Enter a description of the case: ")
+
+#     update_backstories(agents, case_description)
+#     witness_defense_testimony = input("Witness for Defense, enter your testimony: ")
+#     witness_prosecution_testimony = input("Witness for Prosecution, enter your testimony: ")
+
+#     tasks = [
+#         Task(description=f"Case: {case_description}\nGive an opening statement for the prosecution.",
+#              expected_output="Compelling case summary.",
+#              agent=agents["prosecution_lawyer"],
+#              model=LLAMA_MODEL,
+#              base_url=OLLAMA_BASE_URL),
+
+#         Task(description=f"Case: {case_description}\nGive an opening statement for the defense.",
+#              expected_output="Defense of the accused.",
+#              agent=agents["defense_lawyer"],
+#              model=LLAMA_MODEL,
+#              base_url=OLLAMA_BASE_URL),
+
+#         Task(description=f"Interrogate the witness for the defense. Witness said: '{witness_defense_testimony}'",
+#              expected_output="Cross-examine the credibility of their testimony.",
+#              agent=agents["prosecution_lawyer"],
+#              model=LLAMA_MODEL,
+#              base_url=OLLAMA_BASE_URL),
+
+#         Task(description=f"Interrogate the witness for the prosecution. Witness said: '{witness_prosecution_testimony}'",
+#              expected_output="Try to weaken their testimony.",
+#              agent=agents["defense_lawyer"],
+#              model=LLAMA_MODEL,
+#              base_url=OLLAMA_BASE_URL),
+
+#         Task(description="Give your closing statement.",
+#              expected_output="Summarize your defense.",
+#              agent=agents["defense_lawyer"],
+#              model=LLAMA_MODEL,
+#              base_url=OLLAMA_BASE_URL),
+
+#         Task(description="Give your closing statement.",
+#              expected_output="Summarize your case against the defendant.",
+#              agent=agents["prosecution_lawyer"],
+#              model=LLAMA_MODEL,
+#              base_url=OLLAMA_BASE_URL),
+#     ]
+
+#     crew = Crew(
+#         agents=list(agents.values()),
+#         tasks=tasks,
+#         verbose=True
+#     )
+
+#     print("\n👩‍⚖ Running the Courtroom Simulation...\n")
+#     results = crew.kickoff()
+
+#     # 🔊 Speak each result per agent (best effort parsing)
+#     for idx, task in enumerate(tasks):
+#         role_key = task.agent.role.lower().replace(" ", "_")  # match VOICE_MAP keys
+#         print(f"\n🗣️ {task.agent.role} says:\n{results[idx]}\n")
+#         say(results[idx], role_key)
+
+#     print("\n✅ Simulation Complete.\n")
+
+#     jury_verdict = input("🗳 Jury, enter your verdict (Guilty / Not Guilty): ")
+#     judge_final_statement = input("👨‍⚖ Judge, write your final ruling statement: ")
+
+#     say(judge_final_statement, "judge")
+#     say(jury_verdict, "jury")
+
+#     print("\n🎓 Final Courtroom Summary:")
+#     print("📄 Case:", case_description)
+#     print("🧑‍⚖ Judge's Final Ruling:", judge_final_statement)
+#     print("🧑‍⚖ Jury's Verdict:", jury_verdict)
+#     print("📜 Trial Completed ✅")
+# if __name__ == "__main__":
+#     run_trial()
