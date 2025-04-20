@@ -5,44 +5,7 @@ os.makedirs("tts_output", exist_ok=True)
 from crewai import Crew, LLM
 from crewai import Agent, Task, Crew
 from dotenv import load_dotenv
-# import asyncio
-# import edge_tts
-# import uuid
-# os.environ["CREWAI_TELEMETRY_OPENTELEMETRY_DISABLED"] = "true"
-
-# === TEXT-TO-SPEECH (Edge-TTS) SETUP ===
-# VOICE_MAP = {
-#     "defendant": "en-US-GuyNeural",
-#     "defense_lawyer": "en-GB-RyanNeural",
-#     "plaintiff": "en-US-JennyNeural",
-#     "prosecution_lawyer": "en-GB-SoniaNeural",
-#     "witness_defense": "en-US-ChristopherNeural",
-#     "witness_prosecution": "en-AU-NatashaNeural",
-#     "judge": "en-US-AndrewNeural",
-#     "jury": "en-US-AriaNeural"
-# }
-
-# async def speak(text, agent_key):
-#     voice = VOICE_MAP.get(agent_key, "en-US-GuyNeural")
-#     filename = f"tts_output/{agent_key}_{uuid.uuid4()}.mp3"
     
-#     communicate = edge_tts.Communicate(text=text, voice=voice)
-#     await communicate.save(filename)
-
-#     # Optional: Play audio (macOS/Windows only)
-#     try:
-#         if os.name == "nt":
-#             os.system(f"start {filename}")
-#         elif os.name == "posix":
-#             os.system(f"afplay '{filename}'")  # For macOS
-#     except Exception as e:
-#         print(f"Audio playback error: {e}")
-
-# def say(text, agent_key):
-#     asyncio.run(speak(text, agent_key))
-
-
-
 OPENAI_API_KEY=""
 
 llm = LLM(
@@ -250,6 +213,44 @@ def run_trial():
     print("📜 Trial Completed ✅")
 if __name__ == "__main__":
     run_trial()
+
+
+
+#audio playback code
+
+# import asyncio
+# import edge_tts
+# import uuid
+   # os.environ["CREWAI_TELEMETRY_OPENTELEMETRY_DISABLED"] = "true"
+    # === TEXT-TO-SPEECH (Edge-TTS) SETUP ===
+        # VOICE_MAP = {
+        #     "defendant": "en-US-GuyNeural",
+        #     "defense_lawyer": "en-GB-RyanNeural",
+        #     "plaintiff": "en-US-JennyNeural",
+        #     "prosecution_lawyer": "en-GB-SoniaNeural",
+        #     "witness_defense": "en-US-ChristopherNeural",
+        #     "witness_prosecution": "en-AU-NatashaNeural",
+        #     "judge": "en-US-AndrewNeural",
+        #     "jury": "en-US-AriaNeural"
+    # }
+    
+    # async def speak(text, agent_key):
+#     voice = VOICE_MAP.get(agent_key, "en-US-GuyNeural")
+#     filename = f"tts_output/{agent_key}_{uuid.uuid4()}.mp3"
+#     communicate = edge_tts.Communicate(text=text, voice=voice)
+#     await communicate.save(filename)
+
+#     # Optional: Play audio (macOS/Windows only)
+#     try:
+#         if os.name == "nt":
+#             os.system(f"start {filename}")
+#         elif os.name == "posix":
+#             os.system(f"afplay '{filename}'")  # For macOS
+#     except Exception as e:
+#         print(f"Audio playback error: {e}")
+
+# def say(text, agent_key):
+#     asyncio.run(speak(text, agent_key))
 # def run_trial():
 #     agents = create_agents()
 
